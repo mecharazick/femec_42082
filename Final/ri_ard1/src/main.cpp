@@ -3,6 +3,8 @@
 #include <Ethernet.h>
 
 int BUTTON_PIN = 2;
+long int now = millis();
+long int timeout = 10;
 
 byte mac[] = {0x90, 0xA2, 0xDA, 0x00, 0x64, 0x50};
 IPAddress local_ip = IPAddress(192, 168, 0, 50);
@@ -20,15 +22,17 @@ void setup()
 
 void loop()
 {
-  if (digitalRead(BUTTON_PIN) == HIGH)
-  {
-    EthernetClient client = server.available();
-    if(client = true) runSeq();
-  }
-  delay(10);
+  if (now + timeout < millis())
+    if (digitalRead(BUTTON_PIN) == HIGH)
+    {
+      EthernetClient client = server.available();
+      if (client = true)
+        run();
+      now = millis();
+    }
 }
 
-void runSeq()
+void run()
 {
   server.write(1);
 }
